@@ -1,7 +1,6 @@
-package Package;
+package Package.order;
 
 public class Order {
-
     private String firstName;
     private String lastName;
     private String address;
@@ -22,9 +21,7 @@ public class Order {
         this.comment = comment;
         this.color = color;
     }
-
     public Order(){
-
     }
     public String getFirstName() {
         return firstName;
@@ -59,31 +56,24 @@ public class Order {
     public int getRentTime() {
         return rentTime;
     }
-
     public void setRentTime(int rentTime) {
         this.rentTime = rentTime;
     }
-
     public String getDeliveryDate() {
         return deliveryDate;
     }
-
     public void setDeliveryDate(String deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
-
     public String getComment() {
         return comment;
     }
-
     public void setComment(String comment) {
         this.comment = comment;
     }
-
     public String[] getColor() {
         return color;
     }
-
     public void setColor(String[] color) {
         this.color = color;
     }

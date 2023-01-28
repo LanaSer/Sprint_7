@@ -1,26 +1,23 @@
-import Package.Client;
-import io.qameta.allure.junit4.DisplayName;
-import org.junit.Test;
 
-import static io.restassured.RestAssured.given;
+import Package.order.OrderStep;
+import Package.order.Order;
+import io.qameta.allure.junit4.DisplayName;
+import io.restassured.response.ValidatableResponse;
+import org.junit.Before;
+import org.junit.Test;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class ChecklistOrderTest extends Client {
-    static private String checkOrder = "/api/v1/orders";
-
+public class ChecklistOrderTest{
+    private OrderStep orderStep;
+    @Before
+    public void setUp() {
+        orderStep = new OrderStep();
+    }
 
     @Test
     @DisplayName("Проверяем список заказов")
-    public void ChecklistOrderTest(){
-        given()
-                .spec(getSpec())
-                .when()
-                .get(checkOrder)
-                .then()
-                .assertThat()
-                .statusCode(200)
-                .and()
-                .body("orders", notNullValue());
+    public void checklistOrderTest() {
+        ValidatableResponse response = orderStep.checklist();
+        response.statusCode(200).and().body("orders", notNullValue());
     }
-
 }

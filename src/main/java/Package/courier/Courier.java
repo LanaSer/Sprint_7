@@ -1,18 +1,20 @@
-package Package;
-public class Courier {
+package Package.courier;
 
+public class Courier {
     private String login;
     private String password;
     private String firstName;
-    public Courier(String login, String password, String firstName){
+
+    public Courier(String login, String password, String firstName) {
 
         this.login = login;
         this.password = password;
         this.firstName = firstName;
+    }
 
+    public Courier() {
     }
-    public Courier(){
-    }
+
     public String getLogin() {
         return login;
     }
@@ -36,5 +38,4 @@ public class Courier {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
 }

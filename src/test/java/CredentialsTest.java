@@ -1,7 +1,7 @@
-import Package.Courier;
-import Package.CourierClient;
-import Package.CourierGenerator;
-import Package.Credentials;
+import Package.courier.Courier;
+import Package.courier.CourierStep;
+import Package.courier.CourierGenerator;
+import Package.courier.Credentials;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
@@ -10,47 +10,49 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.is;
+
 public class CredentialsTest {
-    private  Courier courier;
+    private Courier courier;
     private Credentials credentials;
-    private CourierClient courierClient;
+    private CourierStep courierClient;
     private String id;
+
     @Before
     public void setUp() {
         courier = CourierGenerator.random();
-        courierClient = new CourierClient();
+        courierClient = new CourierStep();
     }
+
     @After
-    public void cleanUp(){
+    public void cleanUp() {
         if (id != null) {
             courierClient.delete(id);
         }
     }
+
     @Test
     @DisplayName("Тестирование авторизации курьера")
-    public void LoginCourierTest(){
+    public void loginCourierTest() {
         ValidatableResponse response = courierClient.create(courier);
         ValidatableResponse loginresponse = courierClient.login(Credentials.from(courier));
         id = loginresponse.extract().path("id").toString();
-        response.assertThat()
-                .statusCode(201)
-                .body("ok", is(true));
+        response.assertThat().statusCode(201).body("ok", is(true));
     }
+
     @Test
     @DisplayName("Тестирование авторизации курьера без логина")
-    public void WithoutLoginCourierTest() {
+    public void withoutLoginCourierTest() {
         courier.setLogin("");
         ValidatableResponse response = courierClient.login(Credentials.from(courier));
-        response.assertThat().body("message", equalTo("Недостаточно данных для входа"))
-                .statusCode(400);
+        response.statusCode(400).assertThat().body("message", equalTo("Недостаточно данных для входа"));
     }
+
     @Test
     @DisplayName("Тестирование авторизации курьера без логина")
-    public void WithoutPasswordCourierTest() {
+    public void withoutPasswordCourierTest() {
         courier.setPassword("");
         ValidatableResponse response = courierClient.login(Credentials.from(courier));
-        response.assertThat().body("message", equalTo("Недостаточно данных для входа"))
-                .and().statusCode(400);
+        response.statusCode(400).assertThat().body("message", equalTo("Недостаточно данных для входа"));
     }
 }
 

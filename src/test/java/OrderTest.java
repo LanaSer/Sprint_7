@@ -1,20 +1,19 @@
-import Package.Client;
-import Package.Order;
+
+import Package.order.Order;
+import Package.order.OrderStep;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
-import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 @RunWith(Parameterized.class)
-public class OrderTest extends Client {
-    static private String createOrder = "/api/v1/orders";
-    static private String cancelOrder = "/api/v1/orders/cancel";
+public class OrderTest {
+    private OrderStep orderStep;
     int track;
     private String firstName = "Ichigo";
     private String lastName = "Kurosaki";
@@ -25,41 +24,38 @@ public class OrderTest extends Client {
     private String deliveryDate = "2022.12.31";
     private String comment = "Bankai";
     private String[] color;
-    public OrderTest(String[]color) {
+
+    public OrderTest(String[] color) {
         this.color = color;
     }
+
     @Parameterized.Parameters
     public static Object[][] orderColor() {
         return new Object[][]{
-                { new String[] {}},
+                {new String[]{}},
                 {new String[]{"GREY"}},
                 {new String[]{"BLACK"}},
                 {new String[]{"BLACK", "GREY"}},
         };
     }
+
+    @Before
+    public void setUp() {
+        orderStep = new OrderStep();
+    }
+
     @Test
     @DisplayName("Тестируем цвет самакатов")
-    public void orderTest(){
+    public void orderTest() {
         Order order = new Order(firstName, lastName, address, metroStation, phone, rentTime, deliveryDate, comment, color);
-        Response response = given()
-                .spec(getSpec())
-                .body(order)
-                .when()
-                .post(createOrder);
-        response.then().log().all()
-                .assertThat()
-                .statusCode(201)
-                .and()
-                .body("track", notNullValue());
-        track = response.path("track");
+        ValidatableResponse response = orderStep.create(order);
+        response.assertThat().log().all().statusCode(201).body("track", is(notNullValue()));
+        track = response.extract().path("track");
     }
+
     @After
-    public ValidatableResponse tearDown(int track) {
-        return given().log().all()
-                .spec(getSpec())
-                .body(track)
-                .when()
-                .put(cancelOrder)
-                .then();
+    public void tearDown() {
+        ValidatableResponse response = orderStep.delete(track);
+
     }
 }
