@@ -1,7 +1,7 @@
-import Package.courier.Courier;
-import Package.courier.CourierStep;
-import Package.courier.CourierGenerator;
-import Package.courier.Credentials;
+import courier.Courier;
+import courier.CourierStep;
+import courier.CourierGenerator;
+import courier.Credentials;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;

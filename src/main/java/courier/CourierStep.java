@@ -1,6 +1,6 @@
-package Package.courier;
+package courier;
 
-import Package.client.Client;
+import client.Client;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;

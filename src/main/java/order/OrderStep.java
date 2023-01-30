@@ -1,6 +1,6 @@
-package Package.order;
+package order;
 
-import Package.client.Client;
+import client.Client;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
@@ -30,8 +30,9 @@ public class OrderStep extends Client {
                 .put(cancelOrder)
                 .then();
     }
+
     @Step("Список заказов")
-    public ValidatableResponse checklist(){
+    public ValidatableResponse checklist() {
         return given().log().all()
                 .spec(getSpec())
                 .when()
@@ -39,8 +40,6 @@ public class OrderStep extends Client {
                 .then()
                 .assertThat();
     }
-
-
 
 
 }
