@@ -40,6 +40,4 @@ public class OrderStep extends Client {
                 .then()
                 .assertThat();
     }
-
-
 }
